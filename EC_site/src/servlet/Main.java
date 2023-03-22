@@ -2,9 +2,7 @@ package servlet;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -37,17 +35,7 @@ public class Main extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		ProductDAO dao=new ProductDAO();
-		List<Product> list;
-		try {
-			list = dao.findAll();
-			request.setAttribute("list", list);
-			RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
-			rd.forward(request, response);
-		} catch (ClassNotFoundException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -55,6 +43,7 @@ public class Main extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+//		商品登録を行う
 		request.setCharacterEncoding("UTF-8");
 		int productNumber = Integer.parseInt(request.getParameter("product_number"));
 		String productName = request.getParameter("product_name");

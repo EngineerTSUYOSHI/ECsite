@@ -12,6 +12,11 @@ public class Category implements Serializable {
 	
 	public Category() {}
 	
+	public Category(int category_code,String category_name) {
+		this.category_code = category_code;
+		this.category_name = category_name;
+	}
+	
 	public Category(int category_code,int category_type,String category_name,int deleteFlg,String createDatetime,String updateDatetime) {
 		this.category_code = category_code;
 		this.category_type = category_type;

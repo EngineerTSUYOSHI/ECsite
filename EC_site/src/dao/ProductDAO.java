@@ -40,7 +40,7 @@ public class ProductDAO {
 				String updateDatetime = rs.getString("update_datetime");
 				String product_img = rs.getString("product_img");
 				
-				System.out.println(productName);	
+				//System.out.println(productName);	
 				
 				list.add(new Product(productNumber, productName, category_code, productPrice, recommend,
 						validateStartDate, validateEndDate, deleteFlg, createDatetime, updateDatetime,product_img));
@@ -77,6 +77,45 @@ public class ProductDAO {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<Product> SearchOne(String name , int code, int minPrice, int maxPrice) throws ClassNotFoundException {
+		List<Product> list = new ArrayList<>();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			String sql =
+					"Select * from products "
+					+ "where product_name = ? or recommend = ? and product_price between ? and ?";
+			
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setString(1, name);
+			pStmt.setInt(2, code);
+			pStmt.setInt(3, minPrice);
+			pStmt.setInt(4, maxPrice);
+			ResultSet rs = pStmt.executeQuery();
+			
+			while(rs.next()) {
+				int productNumber = rs.getInt("product_number");
+				String productName = rs.getString("product_name");
+				int category_code =rs.getInt("category_code");
+				int productPrice = rs.getInt("product_price");
+				int recommend = rs.getInt("recommend");
+				String validateStartDate = rs.getString("valid_start_date");
+				String validateEndDate = rs.getString("valid_end_date");
+				int deleteFlg = rs.getInt("delete_flg");
+				String createDatetime = rs.getString("create_datetime");
+				String updateDatetime = rs.getString("update_datetime");
+				String product_img = rs.getString("product_img");
+				
+				list.add(new Product(productNumber, productName, category_code, productPrice, recommend,
+						validateStartDate, validateEndDate, deleteFlg, createDatetime, updateDatetime,product_img));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		return list;
 	}
 	
 }

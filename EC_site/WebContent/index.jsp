@@ -7,8 +7,12 @@
 <title>開始</title>
 </head>
 <body>
-	<a href="/EC_site/Main">一覧画面へ</a>
+	<!-- 一覧画面へ遷移する -->
+	<form action="/EC_site/ICHIRAN" method="post">
+	<button type="submit">一覧画面へ</button>
+	</form>
 	
+	<!-- DBへ商品登録を行う -->
 	<p>商品登録</p>
 	<form action="/EC_site/Main" method="post" enctype="multipart/form-data">
 	商品コード：<input type="number" name="product_number"><br>

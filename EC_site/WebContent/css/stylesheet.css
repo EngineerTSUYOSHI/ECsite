@@ -28,21 +28,20 @@ a{
     float:right;
 }
 
-.parent{
+table .parent{
     display: flex;
-    flex-flow: row wrap;
     justify-content: space-between;
-    max-width: fit-content;
 }
 
-.child{
-    width: 240PX;
-    max-width: 100%;
-    height:auto;
-    border: navy solid 1px;
-   }
+table .parent img{
+    display: block;
+    width: 100%;/*任意の横幅を指定*/
+    height: 200px;/*任意の高さを指定*/
+    object-fit: cover;
+}
 
-.child p {
+table .child{
+    border: navy solid 1px;
     text-align: center;
 }
 
