@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dto.ProductListDTO;
 import model.ProductListLogic;
 
 /**
@@ -32,17 +32,12 @@ public class ProductListController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-		ProductListLogic pll = new ProductListLogic();
-		ArrayList<Object> list = pll.execute();
-		//System.out.println(list);
-		for(Object l:list){
-			System.out.println(l);
-		}
-
-		request.setAttribute("list", list);
-		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
-		rd.forward(request, response);
+//		request.setCharacterEncoding("UTF-8");
+//		ProductListLogic pll = new ProductListLogic();
+//		ProductListDTO list = pll.execute();
+//		request.setAttribute("list", list);
+//		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
+//		rd.forward(request, response);
 	}
 
 	/**
@@ -52,12 +47,9 @@ public class ProductListController extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		ProductListLogic pll = new ProductListLogic();
-		ArrayList<Object> list = pll.execute();
-//		ProductListDTO型
+		ProductListDTO list = pll.execute();
 		request.setAttribute("list", list);
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		rd.forward(request, response);
-		
 	}
-
 }
