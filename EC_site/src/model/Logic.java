@@ -10,9 +10,9 @@ import dto.Product;
 public class Logic {
 	CategoryDAO cdao = new CategoryDAO();
 	ProductDAO dao = new ProductDAO();
-	List<Category> categoryList;
-	List<Category> recommendList;
-	List<Product> list;
+	List<Category> categoryList = findCategory();
+	List<Category> recommendList = findRecommend();
+	List<Product> list = findAll();
 	
 	//全てのDB情報を抜き出す
 	public List<Product> findAll() {

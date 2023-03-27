@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import dto.Category;
 
@@ -15,8 +14,8 @@ public class CategoryDAO {
 	private final String DB_USER = "root";
 	private final String DB_PASS = "root";
 	
-	public List<Category> findCategory() throws ClassNotFoundException {
-		List<Category> categoryList = new ArrayList<>();
+	public ArrayList<Category> findCategory() throws ClassNotFoundException {
+		ArrayList<Category> categoryList = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
@@ -38,8 +37,8 @@ public class CategoryDAO {
 		return categoryList;
 	}
 	
-	public List<Category> findRecommend() throws ClassNotFoundException {
-		List<Category> categoryList = new ArrayList<>();
+	public ArrayList<Category> findRecommend() throws ClassNotFoundException {
+		ArrayList<Category> categoryList = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);

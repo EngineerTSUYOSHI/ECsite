@@ -35,9 +35,8 @@ public class Search extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		int category_code = Integer.parseInt(request.getParameter("recommend"));
-		System.out.println(category_code);
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -50,6 +49,9 @@ public class Search extends HttpServlet {
 		int category_code = Integer.parseInt(request.getParameter("category_code"));
 		int minPrice = Integer.parseInt(request.getParameter("minPrice"));
 		int maxPrice = Integer.parseInt(request.getParameter("maxPrice"));
+		int recommend = Integer.parseInt(request.getParameter("recommend"));
+		
+		System.out.println(recommend);
 		
 		System.out.println(productName + ' ' + category_code + ' ' + minPrice + ' ' + maxPrice);
 		

@@ -16,6 +16,7 @@ public class Product implements Serializable{
 	private String updateDatetime;
 	
 	
+	
 	public Product() {}
 	
 	public Product(int productNumber,String productName,int category_code,int productPrice,int recommend

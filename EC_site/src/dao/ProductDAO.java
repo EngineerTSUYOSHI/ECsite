@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import dto.Product;
 
@@ -16,13 +15,15 @@ public class ProductDAO {
 	private final String DB_USER = "root";
 	private final String DB_PASS = "root";
 	
-	public List<Product> findAll() throws ClassNotFoundException {
-		List<Product> list = new ArrayList<>();
+	public ArrayList<Product> findAll() throws ClassNotFoundException {
+		ArrayList<Product> list = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			String sql =
-					"Select * from products";
+					"Select * from products "
+					+ "where product_name = '?'"
+					+ "orde by 'recommend'";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			
 			ResultSet rs = pStmt.executeQuery();
@@ -56,6 +57,8 @@ public class ProductDAO {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");	
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			String product_name = product.getProductName();
+			
 			String sql =
 					"insert into products (product_number ,product_name ,category_code ,product_price ,recommend ,valid_start_date ,valid_end_date ,delete_flg,product_img) \n"
 					+ "values(?,?,?,?,?,?,?,?,?)";
@@ -79,15 +82,15 @@ public class ProductDAO {
 		}
 	}
 	
-	public List<Product> SearchOne(String name , int code, int minPrice, int maxPrice) throws ClassNotFoundException {
-		List<Product> list = new ArrayList<>();
+	public ArrayList<Product> SearchOne(String name , int code, int minPrice, int maxPrice) throws ClassNotFoundException {
+		ArrayList<Product> list = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			String sql =
 					"Select * from products "
-					+ "where product_name = ? or recommend = ? and product_price between ? and ?";
-			
+					+ "where product_name = ? or recommend = ? and product_price between ? and ?"  ;
+//			order by 検索条件 limit 5 offset 0　でできる
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setString(1, name);
 			pStmt.setInt(2, code);

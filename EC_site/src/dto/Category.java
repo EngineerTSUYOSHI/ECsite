@@ -9,6 +9,9 @@ public class Category implements Serializable {
 	private int deleteFlg;
 	private String createDatetime;
 	private String updateDatetime;
+	private String product_name;
+	private int lowPrice;
+	private int upPrice;
 	
 	public Category() {}
 	
@@ -24,6 +27,13 @@ public class Category implements Serializable {
 		this.deleteFlg = deleteFlg;
 		this.createDatetime = createDatetime;
 		this.updateDatetime = updateDatetime;
+	}
+
+	public Category(String product_name, int category_code, int lowPrice, int upPrice) {
+		this.product_name = product_name;
+		this.category_code = category_code;
+		this.lowPrice = lowPrice;
+		this.upPrice = upPrice;
 	}
 
 	public int getCategory_code() {

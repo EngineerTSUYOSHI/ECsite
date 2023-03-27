@@ -28,23 +28,6 @@ a{
     float:right;
 }
 
-table .parent{
-    display: flex;
-    justify-content: space-between;
-}
-
-table .parent img{
-    display: block;
-    width: 100%;/*任意の横幅を指定*/
-    height: 200px;/*任意の高さを指定*/
-    object-fit: cover;
-}
-
-table .child{
-    border: navy solid 1px;
-    text-align: center;
-}
-
 footer{
     background-color: silver;
     height:60px;
@@ -54,4 +37,25 @@ footer p{
     float: right;
     font-size: 20px;
     margin: 0px 5px 0px 0px;
+}
+
+.my-parts {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: stretch;
+	text-align: center;
+}
+.my-parts div {
+	width: calc(20% - 2px);
+	border: 1px solid navy;
+	margin: 1px;
+    padding: .8em;
+}
+
+.my-parts img{
+    display: block;
+    width: 100%;/*任意の横幅を指定*/
+    height: 200px;/*任意の高さを指定*/
+    object-fit: cover;
 }
