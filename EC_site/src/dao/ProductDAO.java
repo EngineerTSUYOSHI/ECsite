@@ -20,10 +20,7 @@ public class ProductDAO {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			String sql =
-					"Select * from products "
-					+ "where product_name = '?'"
-					+ "orde by 'recommend'";
+			String sql = "Select * from products order by recommend limit 15 offset 0 ";					
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			
 			ResultSet rs = pStmt.executeQuery();
@@ -40,9 +37,7 @@ public class ProductDAO {
 				String createDatetime = rs.getString("create_datetime");
 				String updateDatetime = rs.getString("update_datetime");
 				String product_img = rs.getString("product_img");
-				
-				//System.out.println(productName);	
-				
+
 				list.add(new Product(productNumber, productName, category_code, productPrice, recommend,
 						validateStartDate, validateEndDate, deleteFlg, createDatetime, updateDatetime,product_img));
 			}

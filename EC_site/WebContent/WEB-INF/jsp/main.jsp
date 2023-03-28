@@ -1,10 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import="java.util.*,dto.*"%>
 <%
-	List<Product> list = (List<Product>)request.getAttribute("list");
-	List<Category> categoryList = (List<Category>)request.getAttribute("categoryList");
-	List<Category> recommendList = (List<Category>)request.getAttribute("recommendList");
-	/* ArrayList<Object> list = (ArrayList<Object>)request.getAttribute("list"); */ 
+	ProductListDTO list = (ProductListDTO)request.getAttribute("list");
 %>
 <!DOCTYPE html>
 <html>
@@ -19,43 +16,39 @@
         <!-- ロゴ表示 -->
         <p>架空ECサイト</p>
     </header>
-    
     <main>
         <p>検索</p>
-        <form action='/EC_site/Search' method='post' name='myform'>
+        <form action='/EC_site/ProductListController' method='post' name='myform'>
 	        <div>
 	            <label>商品名：</label>　<input type="text" name='product_name'>
 	            <label>カテゴリ：</label>　
 	            <!-- カテゴリのプルダウンリストを表示 -->
 	            <select name="category_code">
-	                <% for(int i=0; i < categoryList.size();i++){%>
-	    				<option value=<%=i %>><%=categoryList.get(i).getCategory_name() %></option>
-	    			<%} %>
+	            	<!-- ProductListDTOからCategoryの要素を代入 -->
+	            	<% ArrayList<Category> categorys = list.getCategorys(); %>
+	                <% for(int i=0; i < categorys.size() ;i++){%>
+	    				<option value=<%=i %>><%=categorys.get(i).getCategory_name() %></option>
+	    			<% } %>
 	            </select>
 	        </div>
-	
 	        <div>
-	            <label>価格：</label> <input type="text" name='minPrice'  value=1><label>円 〜 </label><input type="text" name='maxPrice' value=9999999><label>円</label> 
+	            <label>価格：</label> <input type="text" name='lowPrice'  value=1><label>円 〜 </label><input type="text" name='upPrice' value=9999999><label>円</label> 
 	        </div>
-				
 	        <div class="search">
 	        	<input class="btn" type="submit" value="検索">
 	        </div>
-        
 	        <!-- 水平線をひく -->
 	        <hr>
-	
 	        <!-- ここからは商品情報を表示する箇所 -->
-
 	        <div　class="seni">
-	            
 		            <label>並び順：</label>
 		            <select name="recommend" id='recommend'>
-		                <% for(int i=0; i < recommendList.size();i++){%>
-		    				<option value=<%=i %>><%=recommendList.get(i).getCategory_name() %></option>
+		            <!-- ProductListDTOからRecommendの要素を代入 -->
+		            	<% ArrayList<Category> recommends = list.getRecommends();%>
+		                <% for(int i=0; i < recommends.size() ;i++){%>
+		    				<option value=<%=i %>><%=recommends.get(i).getCategory_name() %></option>
 		    			<%} %>
 		            </select>
-	            
 	            <a href="index.html">最後へ</a>
 	            <a href="index.html">次へ</a>
 	            <a href="index.html">5</a>
@@ -70,15 +63,16 @@
         </form>
 		<!-- 商品一覧の表示テーブル -->
         <div class="my-parts">
-            <%for(Product p:list){ %>
+			<% ArrayList<Product> products = list.getProducts(); %>        	
+            <%for(Product p: products){ %>
             <div>
                 <img src="/EC_site/upload/<%=p.getProduct_img()%>">
                 <p><%=p.getProductName() %></p>
                 <p><%=p.getProductPrice() %></p>
+                <%-- <% System.out.println(p.getProduct_img()); %> --%>
             </div>
            <% } %>
         </div>
-        
     </main>
     <footer>
         <p>copyright@Web開発3.05</p>

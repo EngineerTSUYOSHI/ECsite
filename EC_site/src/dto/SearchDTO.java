@@ -7,13 +7,37 @@ public class SearchDTO implements Serializable {
 	private int categoryCode;
 	private int lowPrice;
 	private int upPrice;
+	private int recommendCode;
+	private int limit;
+	private int offset;
 	
 	public SearchDTO() {}
-	public SearchDTO(String productName,int categoryCode,int lowPrice,int upPrice) {
+	public SearchDTO(String productName,int categoryCode,int lowPrice,int upPrice,int recommendCode,int limit,int offset) {
 		this.productName = productName;
 		this.categoryCode = categoryCode;
 		this.lowPrice = lowPrice;
 		this.upPrice = upPrice;
+		this.categoryCode = categoryCode;
+		this.limit = limit;
+		this.offset = offset;
+	}
+	public int getRecommendCode() {
+		return recommendCode;
+	}
+	public void setRecommendCode(int recommendCode) {
+		this.recommendCode = recommendCode;
+	}
+	public int getLimit() {
+		return limit;
+	}
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
 	}
 	public String getProductName() {
 		return productName;

@@ -22,10 +22,16 @@ public class ProductListLogic {
 		search.setLowPrice(0);
 		search.setUpPrice(999999);
 //		取得位置の初期値設定
-		int limit = 15;
-		int offset = 0;
+//		ProductListDTO plDTO = new ProductListDTO(); 
+//		plDTO.setLimit(15);
+//		plDTO.setOffset(0);
+//		plDTO.setCategory(0);
+//		plDTO.setRecommend(1);
+//		int limit = 15;
+//		int offset = 0;
 //		並び順設定
 		Category category = new Category();
+		
 		String order_by;
 		if(category.getCategory_code() == 1) {
 			order_by = "recommend";
@@ -50,7 +56,7 @@ public class ProductListLogic {
 			return null;
 		}
 //		商品画面DTO生成
-		ProductListDTO plDTO = new ProductListDTO(products,categorys,recommends,search,limit,offset);
+		ProductListDTO plDTO = new ProductListDTO(products,categorys,recommends,search,15,0);
 		return plDTO;
 	}
 }
