@@ -40,7 +40,7 @@
 	        <!-- 水平線をひく -->
 	        <hr>
 	        <!-- ここからは商品情報を表示する箇所 -->
-	        <div　class="seni">
+	        <div class="seni">
 		            <label>並び順：</label>
 		            <select name="recommend" id='recommend'>
 		            <!-- ProductListDTOからRecommendの要素を代入 -->
@@ -54,8 +54,8 @@
 	            <a href="index.html">5</a>
 	            <a href="index.html">4</a>
 	            <a href="index.html">3</a>
-	            <a href="index.html">2</a>
-	            <a href="index.html">1</a>
+	            <a href="/EC_site/ProductListController?id=2" name='page_num' id='page_num'>2</a>
+	            <a href="/EC_site/ProductListController?id=1" name='page_num' id='page_num'>1</a>
 	            <a href="index.html">前へ</a>
 	            <a href="index.html">最初へ</a>
 	        </div>
@@ -81,6 +81,12 @@
     <script>
 	    var recommend = document.getElementById('recommend');
 	    recommend.addEventListener('change', function() {
+	      //submit()でフォームの内容を送信
+	      document.myform.submit(); 
+	    })
+	    
+	    var page_num = document.getElementById('page_num');
+	    recommend.addEventListener('click', function() {
 	      //submit()でフォームの内容を送信
 	      document.myform.submit(); 
 	    })

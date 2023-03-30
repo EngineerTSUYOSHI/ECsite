@@ -34,7 +34,7 @@ public class ProductListController extends HttpServlet {
 		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
 		ProductListLogic pll = new ProductListLogic();
-		ProductListDTO list = pll.execute();
+		ProductListDTO list = pll.execute(request,response);
 		request.setAttribute("list", list);
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		rd.forward(request, response);
@@ -45,18 +45,9 @@ public class ProductListController extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		request.setCharacterEncoding("UTF-8");
-//		検索条件を取得
-		String productName = request.getParameter("product_name");
-		int category_code = Integer.parseInt(request.getParameter("category_code"));
-		int lowPrice = Integer.parseInt(request.getParameter("lowminPrice"));
-		int upPrice = Integer.parseInt(request.getParameter("upPrice"));
-		int recommend = Integer.parseInt(request.getParameter("recommend"));		
-		System.out.println("カテゴリ:" + recommend);
-		System.out.println("商品名:" + productName + " カテゴリ: " + category_code + " 最低価格: " + lowPrice + " 最高価格: " + upPrice);		
-		
+		request.setCharacterEncoding("UTF-8");		
 		ProductListLogic pll = new ProductListLogic();
-		ProductListDTO list = pll.execute();
+		ProductListDTO list = pll.execute(request,response);
 		request.setAttribute("list", list);
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		rd.forward(request, response);
