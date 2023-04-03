@@ -24,99 +24,98 @@ public class ProductListLogic {
 	public ProductListDTO execute(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 //		検索条件DTOの生成、値の初期値を設定
 		SearchDTO search = new SearchDTO();
+//		errorFlg > 0でエラーページへ
+		int errorFlg = 0;
 		if(request.getParameter("product_name") == null) {
 			//nullの場合は空文字をセット
 			search.setProductName("");
 		}else {
 			search.setProductName(request.getParameter("product_name"));
 		}
+//		カテゴリーコードのチェック
 		if(request.getParameter("category_code") == null) {
 			search.setCategoryCode(0);
+		}else if(!request.getParameter("category_code").matches("^[0-9]+$") ){
+			errorFlg += 1;
 		}else {
 			search.setCategoryCode(Integer.parseInt(request.getParameter("category_code")));
 		}
-		if(request.getParameter("lowPrice") == null) {
+//		価格（下限）チェック
+		if(request.getParameter("lowPrice") == null || request.getParameter("lowPrice").isEmpty()) {
 			search.setLowPrice(0);
+		}else if(!request.getParameter("lowPrice").matches("^[0-9]+$")){
+			errorFlg += 1;
+			System.out.println("価格（下限）は数値ではありません");
 		}else {
-			try {
-				search.setLowPrice(Integer.parseInt(request.getParameter("lowPrice")));
-			}catch(Exception e){
-				e.printStackTrace();
-				System.out.println("価格（下限）は数値ではありません");
-				RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
-				rd.forward(request, response);
-			}
+			search.setLowPrice(Integer.parseInt(request.getParameter("lowPrice")));
 		}
-		if(request.getParameter("upPrice") == null) {
+//		価格（上限）チェック
+		if(request.getParameter("upPrice") == null || request.getParameter("upPrice").isEmpty()) {
 			search.setUpPrice(9999999);
+		}else if(!request.getParameter("upPrice").matches("^[0-9]+$")){
+			errorFlg += 1;
+			System.out.println("価格（上限）は数値ではありません");
 		}else {
-			try {
-				search.setUpPrice(Integer.parseInt(request.getParameter("upPrice")));
-			}
-			catch(Exception e){
-				e.printStackTrace();
-				System.out.println("価格（上限）は数値ではありません");
-				RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
-				rd.forward(request, response);
-			}
+			search.setUpPrice(Integer.parseInt(request.getParameter("upPrice")));
 		}
+//		おすすめ順のチェック
 		if(request.getParameter("recommend") == null) {
 			//初期値はおすすめ順
-			search.setRecommendCode(1);
+			search.setRecommendCode(0);
+		}else if(!request.getParameter("recommend").matches("^[0-9]+$")){
+			errorFlg += 1;
+			System.out.println("並び順コードが数値ではありません");
 		}else {
 			search.setRecommendCode(Integer.parseInt(request.getParameter("recommend")));
 		}
-		System.out.println(request.getParameter("page_num"));
+//		ページ番号から取得開始位置を設定
+		int limit = 15;
+		search.setLimit(limit);
+		int offset;
+		if(request.getParameter("now_page") == null) {
+			offset = 0;
+		}else if(!request.getParameter("now_page").matches("^[0-9]+$")){
+			errorFlg += 1;
+			System.out.println("ページ番号が数値ではありません");
+		}else {
+			offset = (Integer.parseInt(request.getParameter("now_page")) * limit) - limit;
+			search.setOffset(offset);
+		}
+//		errorFlg > 0でエラーページへ		
+		if(errorFlg > 0) {
+			RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
+			rd.forward(request, response);
+		}
+		System.out.println("Page No: " + request.getParameter("now_page"));
 		System.out.println("productName is " + search.getProductName());
 		System.out.println("categoryCode is " + search.getCategoryCode());
 		System.out.println("low is " + search.getLowPrice());
 		System.out.println("up is " + search.getUpPrice());
 		System.out.println("recommendCode is " + search.getRecommendCode());
-//		取得位置の初期値設定
-//		ProductListDTO plDTO = new ProductListDTO(); 
-//		plDTO.setLimit(15);
-//		plDTO.setOffset(0);
-//		plDTO.setCategory(0);
-//		plDTO.setRecommend(1);
-//		int limit = 15;
-//		int offset = 0;
-//		並び順設定
-		
+		System.out.println("limit is " + search.getLimit());
+		System.out.println("offset is " + search.getOffset());
+		System.out.println("--------------------------------");
 		
 		Category category = new Category();
-		
-		String order_by;
-		if(category.getCategory_code() == 1) {
-			order_by = "recommend";
-		}else if(category.getCategory_code() == 2) {
-			order_by = "product_price";
-		}else if(category.getCategory_code() == 2) {
-			order_by = "product_price desc";
-		}
-		
 		ProductDAO pDAO = new ProductDAO();
 		CategoryDAO cDAO = new CategoryDAO();
-		
-		
 		try {
 //			商品情報の取得、Listへ格納
-			products = pDAO.findAll();
+			products = pDAO.selectProductBySearch(search);
 //			商品カテゴリDTOを生成
 //			3-1?
-			categorys = cDAO.findCategory();
+			categorys = cDAO.selectCategoryByCategoryType(1);
 //			4-1?  4-3-1 並び順DTOを生成
-			recommends = cDAO.findRecommend();
+			recommends = cDAO.selectCategoryByCategoryType(2);
 		} catch (ClassNotFoundException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 			return null;
 		}
 //		4-3 並び順設定
-		OrderDTO orderList = new OrderDTO(category.getCategory_code(),category.getCategory_name());
-		
-		
+		OrderDTO orderList = new OrderDTO(category.getCategory_code(),category.getCategory_name());		
 //		6-1 商品画面DTO生成
-		ProductListDTO plDTO = new ProductListDTO(products,categorys,recommends,search,15,0);
+		ProductListDTO plDTO = new ProductListDTO(products,categorys,recommends,search);
 //		,pageStart,orderCode,orderList
 		return plDTO;
 	}

@@ -14,37 +14,16 @@ public class CategoryDAO {
 	private final String DB_USER = "root";
 	private final String DB_PASS = "root";
 	
-	public ArrayList<Category> findCategory() throws ClassNotFoundException {
+	public ArrayList<Category> selectCategoryByCategoryType(int category_type) throws ClassNotFoundException {
 		ArrayList<Category> categoryList = new ArrayList<>();
+//		recommend = Search.getRecommend();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			String sql =
-					"Select * from category where category_type = 1 order by category_code";
+					"Select * from category where category_type = ? and delete_flg = 0 order by category_code";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			
-			ResultSet rs = pStmt.executeQuery();
-			
-			while(rs.next()) {
-				int category_code = rs.getInt("category_code");
-				String category_name = rs.getString("category_name");				
-				categoryList.add(new Category(category_code, category_name));
-			}
-		}catch (SQLException e){
-			e.printStackTrace();
-			return null;
-		}
-		return categoryList;
-	}
-	
-	public ArrayList<Category> findRecommend() throws ClassNotFoundException {
-		ArrayList<Category> categoryList = new ArrayList<>();
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			String sql =
-					"Select * from category where category_type = 2 order by category_code";
-			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, category_type);
 			
 			ResultSet rs = pStmt.executeQuery();
 			

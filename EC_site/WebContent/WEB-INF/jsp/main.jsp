@@ -32,7 +32,7 @@
 	            </select>
 	        </div>
 	        <div>
-	            <label>価格：</label> <input type="text" name='lowPrice'  value=1><label>円 〜 </label><input type="text" name='upPrice' value=9999999><label>円</label> 
+	            <label>価格：</label> <input type="text" name='lowPrice'  ><label>円 〜 </label><input type="text" name='upPrice' ><label>円</label> 
 	        </div>
 	        <div class="search">
 	        	<input class="btn" type="submit" value="検索">
@@ -51,27 +51,31 @@
 		            </select>
 	            <a href="index.html">最後へ</a>
 	            <a href="index.html">次へ</a>
-	            <a href="index.html">5</a>
-	            <a href="index.html">4</a>
-	            <a href="index.html">3</a>
-	            <a href="/EC_site/ProductListController?id=2" name='page_num' id='page_num'>2</a>
-	            <a href="/EC_site/ProductListController?id=1" name='page_num' id='page_num'>1</a>
+	            <a id='page_num' value='5' onclick='pageClick(5)'>5</a>
+	            <a id='page_num' value='4' onclick='pageClick(4)'>4</a>
+	            <a id='page_num' value='3' onclick='pageClick(3)'>3</a>
+	            <a id='page_num' value='2' onclick='pageClick(2)'>2</a>
+	            <a id='page_num' value='1' onclick='pageClick(1)'>1</a>
 	            <a href="index.html">前へ</a>
 	            <a href="index.html">最初へ</a>
+	            <input type='hidden' value='1' id='now_page' name='now_page'>
 	        </div>
         <!-- 検索のフォーム閉じタグ -->
         </form>
 		<!-- 商品一覧の表示テーブル -->
         <div class="my-parts">
-			<% ArrayList<Product> products = list.getProducts(); %>        	
-            <%for(Product p: products){ %>
-            <div>
-                <img src="/EC_site/upload/<%=p.getProduct_img()%>">
-                <p><%=p.getProductName() %></p>
-                <p><%=p.getProductPrice() %></p>
-                <%-- <% System.out.println(p.getProduct_img()); %> --%>
-            </div>
-           <% } %>
+			<% ArrayList<Product> products = list.getProducts(); %>
+            <% if(products == null || products.isEmpty()){%>
+            	<p>該当する商品はありません</p>
+            <% }else{ %>
+	            <%for(Product p: products){ %>
+	            <div>
+	                <img src="/EC_site/upload/<%=p.getProduct_img()%>">
+	                <p><%=p.getProductName() %></p>
+	                <p><%=p.getProductPrice() %></p>
+	            </div>
+	           <% } %>
+	        <% } %> 
         </div>
     </main>
     <footer>
@@ -85,11 +89,12 @@
 	      document.myform.submit(); 
 	    })
 	    
-	    var page_num = document.getElementById('page_num');
-	    recommend.addEventListener('click', function() {
-	      //submit()でフォームの内容を送信
-	      document.myform.submit(); 
-	    })
+	    function pageClick(page_num){
+			let nowPage = document.getElementById('now_page');
+			nowPage.value = page_num;
+			console.log(nowPage.value);
+			document.myform.submit();
+		}
   	</script>
 </body>
 </html>

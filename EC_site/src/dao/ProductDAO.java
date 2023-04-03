@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import dto.Product;
+import dto.SearchDTO;
 
 public class ProductDAO {
 	
@@ -15,16 +16,36 @@ public class ProductDAO {
 	private final String DB_USER = "root";
 	private final String DB_PASS = "root";
 	
-	public ArrayList<Product> findAll() throws ClassNotFoundException {
+	public ArrayList<Product> selectProductBySearch(SearchDTO search) throws ClassNotFoundException {
 		ArrayList<Product> list = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			String sql = "Select * from products order by recommend limit 15 offset 0 ";					
+			String sql = "select * from products where delete_flg = 0 and sysdate() between valid_start_date and valid_end_date";
+//			価格の検索範囲を設定
+			sql += " and product_price between " + search.getLowPrice() + " and " + search.getUpPrice();
+//			商品名が空でなければ検索
+			if(!search.getProductName().isEmpty()) {
+					sql += " and product_name='" + search.getProductName() + "'";
+			}
+//			カテゴリが選ばれたら検索条件に追加
+			if(search.getCategoryCode() !=0) {
+				sql += " and category_code=" + search.getCategoryCode();
+			}
+//			並び順タグに応じて条件を設定
+			if(search.getRecommendCode() == 0) {
+				sql += " order by recommend";
+			}else if(search.getRecommendCode() == 1) {
+				sql += " order by product_price";
+			}else if(search.getRecommendCode() == 2) {
+				sql += " order by product_price desc";
+			}		
+//			ページ番号に応じた範囲の商品を取得
+			sql += " limit " + search.getLimit() + " offset " + search.getOffset();
+			System.out.println("SQL文:" + sql);
+			
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			
 			ResultSet rs = pStmt.executeQuery();
-			
 			while(rs.next()) {
 				int productNumber = rs.getInt("product_number");
 				String productName = rs.getString("product_name");
