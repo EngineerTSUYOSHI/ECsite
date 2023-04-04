@@ -16,7 +16,6 @@ public class CategoryDAO {
 	
 	public ArrayList<Category> selectCategoryByCategoryType(int category_type) throws ClassNotFoundException {
 		ArrayList<Category> categoryList = new ArrayList<>();
-//		recommend = Search.getRecommend();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);

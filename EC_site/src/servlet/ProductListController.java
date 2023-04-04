@@ -24,18 +24,16 @@ public class ProductListController extends HttpServlet {
      */
     public ProductListController() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");
-		ProductListLogic pll = new ProductListLogic();
-		ProductListDTO list = pll.execute(request,response);
-		request.setAttribute("list", list);
+		ProductListLogic productListLogic = new ProductListLogic();
+		ProductListDTO dto = productListLogic.execute(request,response);
+		request.setAttribute("dto", dto);
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		rd.forward(request, response);
 	}
@@ -44,11 +42,10 @@ public class ProductListController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		request.setCharacterEncoding("UTF-8");		
-		ProductListLogic pll = new ProductListLogic();
-		ProductListDTO list = pll.execute(request,response);
-		request.setAttribute("list", list);
+		ProductListLogic productListLogic = new ProductListLogic();
+		ProductListDTO dto = productListLogic.execute(request,response);
+		request.setAttribute("dto", dto);
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		rd.forward(request, response);
 	}

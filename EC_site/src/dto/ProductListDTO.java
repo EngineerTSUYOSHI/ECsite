@@ -7,16 +7,24 @@ public class ProductListDTO {
 	private ArrayList<Product> products;
 	private ArrayList<Category> recommends;
 	private SearchDTO search;
+	private int now_page;
 	
 	public ProductListDTO() {}
 	public ProductListDTO(ArrayList<Product> products,ArrayList<Category> categorys
-			,ArrayList<Category> recommends,SearchDTO search) {
+			,ArrayList<Category> recommends,SearchDTO search,int now_page) {
 		this.products = products;
 		this.categorys = categorys;
 		this.recommends = recommends;
 		this.search = search;
+		this.now_page = now_page;
 	}
 	
+	public int getNow_page() {
+		return now_page;
+	}
+	public void setNow_page(int now_page) {
+		this.now_page = now_page;
+	}
 	public ArrayList<Category> getCategorys() {
 		return categorys;
 	}
