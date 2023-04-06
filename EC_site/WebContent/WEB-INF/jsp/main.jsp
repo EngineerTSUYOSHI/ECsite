@@ -27,7 +27,7 @@
 	            	<!-- ProductListDTOからCategoryの要素を代入 -->
 	            	<% ArrayList<Category> categorys = dto.getCategorys(); %>
 	                <% for(int i=0; i < categorys.size() ;i++){%>
-	    				<option value=<%=i %>><%=categorys.get(i).getCategory_name() %></option>
+	    				<option value=<%=i %>><%=categorys.get(i).getCategoryName() %></option>
 	    			<% } %>
 	            </select>
 	        </div>
@@ -46,7 +46,7 @@
 		            <!-- ProductListDTOからRecommendの要素を代入 -->
 		            	<% ArrayList<Category> recommends = dto.getRecommends();%>
 		                <% for(int i=0; i < recommends.size() ;i++){%>
-		    				<option value=<%=i %>><%=recommends.get(i).getCategory_name() %></option>
+		    				<option value=<%=i %>><%=recommends.get(i).getCategoryName() %></option>
 		    			<%} %>
 		            </select>
 	            <a id='page_num' value='5' onclick='pageClick(5)'>最後へ</a>

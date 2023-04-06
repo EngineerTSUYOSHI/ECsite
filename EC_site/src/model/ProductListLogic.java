@@ -16,15 +16,15 @@ import dto.Product;
 import dto.ProductListDTO;
 import dto.SearchDTO;
 
-public class ProductListLogic {
-	ArrayList<Product> products;
-	ArrayList<Category> categorys;
-	ArrayList<Category> recommends;
+public class ProductListLogic {	
 	
 	public ProductListDTO execute(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+		ArrayList<Product> products;
+		ArrayList<Category> categorys;
+		ArrayList<Category> recommends;
 //		検索条件DTOの生成、値の初期値を設定
 		SearchDTO search = new SearchDTO();
-//		errorFlg > 0でエラーページへ
+//		errorFlg > 1でエラーページへ
 		int errorFlg = 0;
 		if(request.getParameter("product_name") == null) {
 //		nullの場合は空文字をセット
@@ -36,7 +36,7 @@ public class ProductListLogic {
 		if(request.getParameter("category_code") == null) {
 			search.setCategoryCode(0);
 		}else if(!request.getParameter("category_code").matches("^[0-9]+$") ){
-			errorFlg += 1;
+			errorFlg = 1;
 		}else {
 			search.setCategoryCode(Integer.parseInt(request.getParameter("category_code")));
 		}
@@ -44,7 +44,7 @@ public class ProductListLogic {
 		if(request.getParameter("lowPrice") == null || request.getParameter("lowPrice").isEmpty()) {
 			search.setLowPrice(0);
 		}else if(!request.getParameter("lowPrice").matches("^[0-9]+$")){
-			errorFlg += 1;
+			errorFlg = 1;
 			System.out.println("価格（下限）は数値ではありません");
 		}else {
 			search.setLowPrice(Integer.parseInt(request.getParameter("lowPrice")));
@@ -53,52 +53,44 @@ public class ProductListLogic {
 		if(request.getParameter("upPrice") == null || request.getParameter("upPrice").isEmpty()) {
 			search.setUpPrice(9999999);
 		}else if(!request.getParameter("upPrice").matches("^[0-9]+$")){
-			errorFlg += 1;
+			errorFlg = 1;
 			System.out.println("価格（上限）は数値ではありません");
+		}else if(Integer.parseInt(request.getParameter("upPrice")) > 9999999) {
+			errorFlg = 1;
+			System.out.println("価格（上限）は上限を超えています");
 		}else {
 			search.setUpPrice(Integer.parseInt(request.getParameter("upPrice")));
 		}
 //		おすすめ順のチェック
-		if(request.getParameter("recommend") == null) {
+		if(request.getParameter("recommend") == null || request.getParameter("recommend").isEmpty()) {
 			//初期値はおすすめ順
 			search.setRecommendCode(0);
 		}else if(!request.getParameter("recommend").matches("^[0-9]+$")){
-			errorFlg += 1;
+			errorFlg = 1;
 			System.out.println("並び順コードが数値ではありません");
 		}else {
 			search.setRecommendCode(Integer.parseInt(request.getParameter("recommend")));
 		}
 //		ページ番号から取得開始位置を設定
 		int now_page = 1;
-		int limit = 15;
+		final int LIMIT = 15;
 		int offset = 0;
-		if((request.getParameter("now_page"))== null){
+		if((request.getParameter("now_page"))== null || request.getParameter("now_page").isEmpty()){
 			System.out.println("ページ番号がnullです");
 		}else if(!request.getParameter("now_page").matches("^[0-9]+$")){
-			errorFlg += 1;
+			errorFlg = 1;
 			System.out.println("ページ番号が数値ではありません");
 		}else {
 			now_page = Integer.parseInt(request.getParameter("now_page"));
-			offset = (now_page * limit) - limit;
+			offset = (now_page * LIMIT) - LIMIT;
 		}
-		search.setLimit(limit);
+		search.setLimit(LIMIT);
 		search.setOffset(offset);
-//		errorFlg > 0でエラーページへ
-		if(errorFlg > 0) {
+//		errorFlg ＝ 1でエラーページへ
+		if(errorFlg == 1) {
 			RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/error.jsp");
 			rd.forward(request, response);
 		}
-		
-		System.out.println("Page No: " + now_page);
-		System.out.println("productName is " + search.getProductName());
-		System.out.println("categoryCode is " + search.getCategoryCode());
-		System.out.println("low is " + search.getLowPrice());
-		System.out.println("up is " + search.getUpPrice());
-		System.out.println("recommendCode is " + search.getRecommendCode());
-		System.out.println("limit is " + search.getLimit());
-		System.out.println("offset is " + search.getOffset());
-		System.out.println("--------------------------------");
-		
 		Category category = new Category();
 		ProductDAO pDAO = new ProductDAO();
 		CategoryDAO cDAO = new CategoryDAO();
@@ -109,12 +101,12 @@ public class ProductListLogic {
 			categorys = cDAO.selectCategoryByCategoryType(1);
 //			並び順DTOを生成
 			recommends = cDAO.selectCategoryByCategoryType(2);
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 //		4-3 並び順設定
-		OrderDTO orderList = new OrderDTO(category.getCategory_code(),category.getCategory_name());		
+		OrderDTO orderList = new OrderDTO(category.getCategoryCode(),category.getCategoryName());		
 //		6-1 商品画面DTO生成
 		ProductListDTO productListDTO = new ProductListDTO(products,categorys,recommends,search,now_page);
 		return productListDTO;
