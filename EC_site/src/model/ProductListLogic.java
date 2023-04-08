@@ -17,7 +17,7 @@ import dto.ProductListDTO;
 import dto.SearchDTO;
 
 public class ProductListLogic {	
-	
+	final int LIMIT = 15;
 	public ProductListDTO execute(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		ArrayList<Product> products;
 		ArrayList<Category> categorys;
@@ -62,9 +62,12 @@ public class ProductListLogic {
 			search.setUpPrice(Integer.parseInt(request.getParameter("upPrice")));
 		}
 //		おすすめ順のチェック
-		if(request.getParameter("recommend") == null || request.getParameter("recommend").isEmpty()) {
+		if(request.getParameter("recommend") == null) {
 			//初期値はおすすめ順
-			search.setRecommendCode(0);
+			search.setRecommendCode(1);
+		}else if(request.getParameter("recommend").isEmpty()) {
+			errorFlg = 1;
+			System.out.println("並び順コードが空です");
 		}else if(!request.getParameter("recommend").matches("^[0-9]+$")){
 			errorFlg = 1;
 			System.out.println("並び順コードが数値ではありません");
@@ -73,7 +76,6 @@ public class ProductListLogic {
 		}
 //		ページ番号から取得開始位置を設定
 		int now_page = 1;
-		final int LIMIT = 15;
 		int offset = 0;
 		if((request.getParameter("now_page"))== null || request.getParameter("now_page").isEmpty()){
 			System.out.println("ページ番号がnullです");
@@ -105,9 +107,9 @@ public class ProductListLogic {
 			e.printStackTrace();
 			return null;
 		}
-//		4-3 並び順設定
+//		並び順設定
 		OrderDTO orderList = new OrderDTO(category.getCategoryCode(),category.getCategoryName());		
-//		6-1 商品画面DTO生成
+//		商品画面DTO生成
 		ProductListDTO productListDTO = new ProductListDTO(products,categorys,recommends,search,now_page);
 		return productListDTO;
 	}

@@ -14,7 +14,7 @@ public class CategoryDAO {
 	private final String DB_USER = "root";
 	private final String DB_PASS = "root";
 	
-	public ArrayList<Category> selectCategoryByCategoryType(int category_type) throws ClassNotFoundException {
+	public ArrayList<Category> selectCategoryByCategoryType(int categoryType) throws Exception {
 		ArrayList<Category> categoryList = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -22,14 +22,14 @@ public class CategoryDAO {
 			String sql =
 					"Select * from category where category_type = ? and delete_flg = 0 order by category_code";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
-			pStmt.setInt(1, category_type);
+			pStmt.setInt(1, categoryType);
 			
 			ResultSet rs = pStmt.executeQuery();
 			
 			while(rs.next()) {
-				int category_code = rs.getInt("category_code");
-				String category_name = rs.getString("category_name");				
-				categoryList.add(new Category(category_code, category_name));
+				int categoryCode = rs.getInt("category_code");
+				String categoryName = rs.getString("category_name");				
+				categoryList.add(new Category(categoryCode, categoryName));
 			}
 		}catch (SQLException e){
 			e.printStackTrace();
