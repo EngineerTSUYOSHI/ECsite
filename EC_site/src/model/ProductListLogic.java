@@ -22,44 +22,50 @@ public class ProductListLogic {
 		ArrayList<Product> products;
 		ArrayList<Category> categorys;
 		ArrayList<Category> recommends;
+//		パラメータの値を変数に代入
+		String productName = request.getParameter("product_name");
+		String category_code = request.getParameter("category_code");
+		String lowPrice = request.getParameter("lowPrice");
+		String upPrice = request.getParameter("upPrice");
+		
 //		検索条件DTOの生成、値の初期値を設定
 		SearchDTO search = new SearchDTO();
 //		errorFlg > 1でエラーページへ
 		int errorFlg = 0;
-		if(request.getParameter("product_name") == null) {
+		if(productName == null) {
 //		nullの場合は空文字をセット
 			search.setProductName("");
 		}else {
-			search.setProductName(request.getParameter("product_name"));
+			search.setProductName(productName);
 		}
 //		カテゴリーコードのチェック
-		if(request.getParameter("category_code") == null) {
+		if(category_code == null) {
 			search.setCategoryCode(0);
-		}else if(!request.getParameter("category_code").matches("^[0-9]+$") ){
+		}else if(!category_code.matches("^[0-9]+$") ){
 			errorFlg = 1;
 		}else {
-			search.setCategoryCode(Integer.parseInt(request.getParameter("category_code")));
+			search.setCategoryCode(Integer.parseInt(category_code));
 		}
 //		価格（下限）チェック
-		if(request.getParameter("lowPrice") == null || request.getParameter("lowPrice").isEmpty()) {
+		if(lowPrice == null || lowPrice.isEmpty()) {
 			search.setLowPrice(0);
-		}else if(!request.getParameter("lowPrice").matches("^[0-9]+$")){
+		}else if(!lowPrice.matches("^[0-9]+$")){
 			errorFlg = 1;
 			System.out.println("価格（下限）は数値ではありません");
 		}else {
-			search.setLowPrice(Integer.parseInt(request.getParameter("lowPrice")));
+			search.setLowPrice(Integer.parseInt(lowPrice));
 		}
 //		価格（上限）チェック
-		if(request.getParameter("upPrice") == null || request.getParameter("upPrice").isEmpty()) {
+		if(upPrice == null || upPrice.isEmpty()) {
 			search.setUpPrice(9999999);
-		}else if(!request.getParameter("upPrice").matches("^[0-9]+$")){
+		}else if(!upPrice.matches("^[0-9]+$")){
 			errorFlg = 1;
 			System.out.println("価格（上限）は数値ではありません");
-		}else if(Integer.parseInt(request.getParameter("upPrice")) > 9999999) {
+		}else if(Integer.parseInt(upPrice) > 9999999) {
 			errorFlg = 1;
 			System.out.println("価格（上限）は上限を超えています");
 		}else {
-			search.setUpPrice(Integer.parseInt(request.getParameter("upPrice")));
+			search.setUpPrice(Integer.parseInt(upPrice));
 		}
 //		おすすめ順のチェック
 		if(request.getParameter("recommend") == null) {
@@ -77,6 +83,7 @@ public class ProductListLogic {
 //		ページ番号から取得開始位置を設定
 		int now_page = 1;
 		int offset = 0;
+		
 		if((request.getParameter("now_page"))== null || request.getParameter("now_page").isEmpty()){
 			System.out.println("ページ番号がnullです");
 		}else if(!request.getParameter("now_page").matches("^[0-9]+$")){

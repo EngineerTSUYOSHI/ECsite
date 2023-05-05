@@ -21,6 +21,7 @@ public class SearchDTO implements Serializable {
 		this.limit = limit;
 		this.offset = offset;
 	}
+	
 	public int getRecommendCode() {
 		return recommendCode;
 	}

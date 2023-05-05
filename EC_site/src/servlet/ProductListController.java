@@ -42,7 +42,7 @@ public class ProductListController extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");		
+		request.setCharacterEncoding("UTF-8");
 		ProductListLogic productListLogic = new ProductListLogic();
 		ProductListDTO dto = productListLogic.execute(request,response);
 		request.setAttribute("dto", dto);

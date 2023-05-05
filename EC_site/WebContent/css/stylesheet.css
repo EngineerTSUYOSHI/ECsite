@@ -51,6 +51,12 @@ footer p{
 	border: 1px solid navy;
 	margin: 1px;
     padding: .8em;
+    
+    display: flex;
+    flex-direction: column;
+  	justify-content: center;
+  	align-items: center;
+  	text-align: center;
 }
 
 .my-parts img{
@@ -58,4 +64,9 @@ footer p{
     width: 100%;/*任意の横幅を指定*/
     height: 200px;/*任意の高さを指定*/
     object-fit: cover;
+}
+
+.purchase_link{
+	color:blue;
+	text-decoration: none;
 }

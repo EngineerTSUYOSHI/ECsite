@@ -20,10 +20,10 @@
         <p>検索</p>
         <form action='/EC_site/ProductListController' method='post' name='myform'>
 	        <div>
-	            <label>商品名：</label>　<input type="text" name='product_name'>
-	            <label>カテゴリ：</label>　
+	            <label>商品名：</label><input type="text" name='product_name'>
+	            <label>カテゴリ：</label>
 	            <!-- カテゴリのプルダウンリストを表示 -->
-	            <select name="category_code">
+	            <select name="category_code" id="category_code">
 	            	<!-- ProductListDTOからCategoryの要素を代入 -->
 	            	<% ArrayList<Category> categorys = dto.getCategorys(); %>
 	                <% for(int i=0; i < categorys.size() ;i++){%>
@@ -32,7 +32,7 @@
 	            </select>
 	        </div>
 	        <div>
-	            <label>価格：</label> <input type="text" name='lowPrice'  ><label>円 〜 </label><input type="text" name='upPrice' ><label>円</label> 
+	            <label>価格：</label> <input type="text" value=<%=dto.getSearch().getLowPrice() %> name="lowPrice"><label>円 〜 </label><input type="text" value=<%=dto.getSearch().getUpPrice() %> name='upPrice' ><label>円</label>
 	        </div>
 	        <div class="search">
 	        	<input class="btn" type="submit" value="検索">
@@ -58,7 +58,7 @@
 	            <a id='page_num' value='1' onclick='pageClick(1)'>1</a>
 	            <a id='page_num' value=' ' onclick='pageClick("prev")'>前へ</a>
 	            <a id='page_num' value='1' onclick='pageClick(1)'>最初へ</a>
-	            <input type='hidden' value='1' id='now_page' name='now_page'>
+	            <input type='hidden' value="1" id='now_page' name='now_page'>
 	        </div>
         <!-- 検索のフォーム閉じタグ -->
         </form>
@@ -71,11 +71,14 @@
 	            <%for(Product p: products){ %>
 	            <div>
 	                <img src="/EC_site/upload/<%=p.getProduct_img()%>">
-	                <p><%=p.getProductName() %></p>
+	                <a class='purchase_link' id='purchase_id' value="<%=p.getProductNumber()%>" onclick='purchaseClick(<%=p.getProductNumber()%>)'><%=p.getProductName() %></a>
 	                <p><%=p.getProductPrice() %></p>
 	            </div>
 	           <% } %>
 	        <% } %> 
+	        <form action='/EC_site/PurchaseController' method='post' name='purchase'>
+	        	<input type='hidden' value='' id='product_number' name='product_number'>
+	        </form>
         </div>
     </main>
     <footer>
@@ -84,21 +87,34 @@
     <!-- おすすめ順のプルダウンリストが変わったら画面遷移を行う -->
     <script>
 	    var recommend = document.getElementById('recommend');
+		/* 並び順で選ばれた項目にselected属性を追加 */
+	    recommend.options[<%=dto.getSearch().getRecommendCode()%> - 1].selected = true;
 	    recommend.addEventListener('change', function() {
 	      //submit()でフォームの内容を送信
 	      document.myform.submit(); 
 	    })
+	    var category_code = document.getElementById('category_code');
+	    category_code.options[<%=dto.getSearch().getCategoryCode()%>].selected = true;
+	    
 	    function pageClick(page_num){
 	    	let nowPage = document.getElementById('now_page');
-			if(page_num === 'next'){
-				nowPage.value = <%=dto.getNow_page()%> + 1;
+			if(page_num === 'next' && page_num != 5){
+					nowPage.value = <%=dto.getNow_page()%> + 1;
 			}else if(page_num === 'prev'){
 				nowPage.value = <%=dto.getNow_page()%> - 1;
 			}else{
 				nowPage.value = page_num;
 			}
-			console.log(nowPage.value);
-			document.myform.submit();
+			/* 1ページ目から前へ、または5ページ目から次へのボタンは無効 */
+			if(nowPage.value != 6 && nowPage.value != 0){
+	        	document.myform.submit();
+	        }
+		}
+		
+		function purchaseClick(product_num){
+			let productNumber = document.getElementById('product_number');
+			productNumber.value = product_num; 
+			document.purchase.submit();
 		}
   	</script>
 </body>

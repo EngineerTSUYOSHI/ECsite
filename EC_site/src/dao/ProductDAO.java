@@ -23,7 +23,7 @@ public class ProductDAO {
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			int exsistProductNameFlg = 0;
 			int exsistcategoryCodeFlg = 0;
-			String sql = "select * from products where delete_flg = 0 and sysdate() between valid_start_date and valid_end_date ";
+			String sql = "select * from products where delete_flg = 0 and date_format(sysdate(), '%y/%m/%d') between valid_start_date and valid_end_date ";
 //			価格の検索範囲を設定
 			sql += "and product_price between ? and ? ";
 //			商品名が空でなければ検索
@@ -40,9 +40,9 @@ public class ProductDAO {
 			if(search.getRecommendCode() == 1) {
 				sql += "order by recommend ";
 			}else if(search.getRecommendCode() == 2) {
-				sql += "order by product_price ";
+				sql += "order by product_price, recommend ";
 			}else if(search.getRecommendCode() == 3) {
-				sql += "order by product_price desc ";
+				sql += "order by product_price desc, recommend ";
 			}		
 //			ページ番号に応じた範囲の商品を取得
 			sql += "limit ? offset ?";
@@ -99,7 +99,40 @@ public class ProductDAO {
 		}
 		return list;
 	}
-//	商品登録用のメソッド
+//	選択された商品を商品番号から1件抜き出すメソッド
+	public Product selectProductByProductNumber(int productNo) throws Exception {
+		Product purchasedProduct = new Product();
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
+			String sql = "select * from products where delete_flg = 0 "
+					+ "and sysdate() between valid_start_date and valid_end_date and product_number = ?";
+			PreparedStatement pStmt = conn.prepareStatement(sql);
+			pStmt.setInt(1, productNo);
+			ResultSet rs = pStmt.executeQuery();
+			while(rs.next()) {
+				int productNumber = rs.getInt("product_number");
+				String productName = rs.getString("product_name");
+				int categoryCode =rs.getInt("category_code");
+				int productPrice = rs.getInt("product_price");
+				int recommend = rs.getInt("recommend");
+				String validateStartDate = rs.getString("valid_start_date");
+				String validateEndDate = rs.getString("valid_end_date");
+				int deleteFlg = rs.getInt("delete_flg");
+				String createDatetime = rs.getString("create_datetime");
+				String updateDatetime = rs.getString("update_datetime");
+				String productImg = rs.getString("product_img");
+
+				purchasedProduct = new Product(productNumber, productName, categoryCode, productPrice, recommend,
+						validateStartDate, validateEndDate, deleteFlg, createDatetime, updateDatetime,productImg);
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+		return purchasedProduct;
+	}	
+	//	商品登録用のメソッド
 	public void insertOne(Product product) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");	
