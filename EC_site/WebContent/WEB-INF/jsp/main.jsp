@@ -2,6 +2,8 @@
     pageEncoding="UTF-8" import="java.util.*,dto.*"%>
 <%
 	ProductListDTO dto = (ProductListDTO)request.getAttribute("dto");
+	String lowPrice = (String)request.getAttribute("lowPrice");
+	String upPrice = (String)request.getAttribute("upPrice");
 %>
 <!DOCTYPE html>
 <html>
@@ -20,7 +22,7 @@
         <p>検索</p>
         <form action='/EC_site/ProductListController' method='post' name='myform'>
 	        <div>
-	            <label>商品名：</label><input type="text" name='product_name'>
+	            <label>商品名：</label><input type="text" name='product_name' value=<%=dto.getSearch().getProductName() %>>
 	            <label>カテゴリ：</label>
 	            <!-- カテゴリのプルダウンリストを表示 -->
 	            <select name="category_code" id="category_code">
@@ -32,7 +34,11 @@
 	            </select>
 	        </div>
 	        <div>
-	            <label>価格：</label> <input type="text" value=<%=dto.getSearch().getLowPrice() %> name="lowPrice"><label>円 〜 </label><input type="text" value=<%=dto.getSearch().getUpPrice() %> name='upPrice' ><label>円</label>
+	            <label>価格：</label> 
+	            <input type="text" value="<%=lowPrice %>" name="lowPrice" maxlength="7" id="lowPrice" onblur="checkChar('lowPrice')" >
+	            <label>円 〜 </label>
+	            <input type="text" value="<%=upPrice %>" name="upPrice" maxlength="7" id="upPrice" onblur="checkChar('upPrice')" >
+	            <label>円</label>
 	        </div>
 	        <div class="search">
 	        	<input class="btn" type="submit" value="検索">
@@ -49,16 +55,16 @@
 		    				<option value=<%=i+1 %>><%=recommends.get(i).getCategoryName() %></option>
 		    			<%} %>
 		            </select>
-	            <a id='page_num' value='5' onclick='pageClick(5)'>最後へ</a>
-	            <a id='page_num' value=' ' onclick='pageClick("next")'>次へ</a>
-	            <a id='page_num' value='5' onclick='pageClick(5)'>5</a>
-	            <a id='page_num' value='4' onclick='pageClick(4)'>4</a>
-	            <a id='page_num' value='3' onclick='pageClick(3)'>3</a>
-	            <a id='page_num' value='2' onclick='pageClick(2)'>2</a>
-	            <a id='page_num' value='1' onclick='pageClick(1)'>1</a>
-	            <a id='page_num' value=' ' onclick='pageClick("prev")'>前へ</a>
-	            <a id='page_num' value='1' onclick='pageClick(1)'>最初へ</a>
-	            <input type='hidden' value="1" id='now_page' name='now_page'>
+	            <a id='last_page' value='5' onclick='pageClick(5)'>最後へ</a>
+	            <a id='next_page' value=' ' onclick='pageClick("next")'>次へ</a>
+	            <a id='page5' value='5' onclick='pageClick(5)'>5</a>
+	            <a id='page4' value='4' onclick='pageClick(4)'>4</a>
+	            <a id='page3' value='3' onclick='pageClick(3)'>3</a>
+	            <a id='page2' value='2' onclick='pageClick(2)'>2</a>
+	            <a id='page1' value='1' onclick='pageClick(1)'>1</a>
+	            <a id='prev_page' value=' ' onclick='pageClick("prev")'>前へ</a>
+	            <a id='first_page' value='1' onclick='pageClick(1)'>最初へ</a>
+	            <input type='hidden' value="" id='now_page' name='now_page'>
 	        </div>
         <!-- 検索のフォーム閉じタグ -->
         </form>
@@ -95,6 +101,16 @@
 	    })
 	    var category_code = document.getElementById('category_code');
 	    category_code.options[<%=dto.getSearch().getCategoryCode()%>].selected = true;
+		/* 5ページ目にいる場合、次へと最後へを非表示 */
+	    if(<%=dto.getNow_page()%> === 5){
+	        document.getElementById('last_page').style.display = 'none';
+	        document.getElementById('next_page').style.display = 'none';
+	    }
+	    /* 1ページ目にいる場合、前へと最初へを非表示 */
+	    if(<%=dto.getNow_page()%> === 1){
+	        document.getElementById('first_page').style.display = 'none';
+	        document.getElementById('prev_page').style.display = 'none';
+	    }
 	    
 	    function pageClick(page_num){
 	    	let nowPage = document.getElementById('now_page');
@@ -105,10 +121,7 @@
 			}else{
 				nowPage.value = page_num;
 			}
-			/* 1ページ目から前へ、または5ページ目から次へのボタンは無効 */
-			if(nowPage.value != 6 && nowPage.value != 0){
-	        	document.myform.submit();
-	        }
+	        document.myform.submit();	        
 		}
 		
 		function purchaseClick(product_num){
@@ -116,6 +129,16 @@
 			productNumber.value = product_num; 
 			document.purchase.submit();
 		}
+		
+		function checkChar(priceType){
+			var regex = /^[\d\s]*$/
+			var priceInput = document.getElementById(priceType);
+	        if(!regex.test(priceInput.value)){
+	            alert("半角数字を入力してください");
+	            priceInput.value="";
+	            return;
+	        }
+		}		
   	</script>
 </body>
 </html>

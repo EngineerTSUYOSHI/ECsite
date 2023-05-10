@@ -25,8 +25,8 @@ public class ProductListLogic {
 //		パラメータの値を変数に代入
 		String productName = request.getParameter("product_name");
 		String category_code = request.getParameter("category_code");
-		String lowPrice = request.getParameter("lowPrice");
-		String upPrice = request.getParameter("upPrice");
+		String inputLowPrice = request.getParameter("lowPrice");
+		String inputUpPrice = request.getParameter("upPrice");
 		
 //		検索条件DTOの生成、値の初期値を設定
 		SearchDTO search = new SearchDTO();
@@ -47,26 +47,33 @@ public class ProductListLogic {
 			search.setCategoryCode(Integer.parseInt(category_code));
 		}
 //		価格（下限）チェック
-		if(lowPrice == null || lowPrice.isEmpty()) {
+//		JSP側で入力値を参照する為の変数を用意
+		String lowPrice = "";
+		if(inputLowPrice == null || inputLowPrice.isEmpty() ) {
 			search.setLowPrice(0);
-		}else if(!lowPrice.matches("^[0-9]+$")){
+		}else if(!inputLowPrice.matches("^[0-9]+$")){
 			errorFlg = 1;
 			System.out.println("価格（下限）は数値ではありません");
 		}else {
-			search.setLowPrice(Integer.parseInt(lowPrice));
+			search.setLowPrice(Integer.parseInt(inputLowPrice));
+			lowPrice = inputLowPrice;
 		}
+		request.setAttribute("lowPrice", lowPrice);
 //		価格（上限）チェック
-		if(upPrice == null || upPrice.isEmpty()) {
+		String upPrice = "";
+		if(inputUpPrice == null || inputUpPrice.isEmpty()) {
 			search.setUpPrice(9999999);
-		}else if(!upPrice.matches("^[0-9]+$")){
+		}else if(!inputUpPrice.matches("^[0-9]+$")){
 			errorFlg = 1;
 			System.out.println("価格（上限）は数値ではありません");
-		}else if(Integer.parseInt(upPrice) > 9999999) {
+		}else if(Integer.parseInt(inputUpPrice) > 9999999) {
 			errorFlg = 1;
 			System.out.println("価格（上限）は上限を超えています");
 		}else {
-			search.setUpPrice(Integer.parseInt(upPrice));
+			search.setUpPrice(Integer.parseInt(inputUpPrice));
+			upPrice = inputUpPrice;
 		}
+		request.setAttribute("upPrice", upPrice);
 //		おすすめ順のチェック
 		if(request.getParameter("recommend") == null) {
 			//初期値はおすすめ順

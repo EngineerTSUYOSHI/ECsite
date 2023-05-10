@@ -32,13 +32,15 @@
                     </div>
                 </td>
                 <td><%=dto.getProduct().getProductPrice() %>円</td>
+                <!-- <form action='/EC_site/PurchaseController' method='post' name='buy'> -->
                 <td><input type="text" maxlength="2" name='quantity' method='post' id='quantity' size='4'><span>個</span></td>
                 <td><input value="" name="total_price" type="text" id="total_price" size='10' readonly>円</td>
-                
+                <!-- </form> -->
             </tr>
         </table>
 
         <div class=button>
+            <input class="btn" type="submit" value="検索">
             <a>購入</a>
             <a>商品一覧へ<br>戻る</a>
         </div>

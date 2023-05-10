@@ -25,7 +25,7 @@ public class ProductDAO {
 			int exsistcategoryCodeFlg = 0;
 			String sql = "select * from products where delete_flg = 0 and date_format(sysdate(), '%y/%m/%d') between valid_start_date and valid_end_date ";
 //			価格の検索範囲を設定
-			sql += "and product_price between ? and ? ";
+			sql += "and product_price >= ? and product_price <= ? ";
 //			商品名が空でなければ検索
 			if(!search.getProductName().isEmpty()) {
 				sql += " and product_name=? ";
@@ -89,10 +89,10 @@ public class ProductDAO {
 				String createDatetime = rs.getString("create_datetime");
 				String updateDatetime = rs.getString("update_datetime");
 				String productImg = rs.getString("product_img");
-
+				
 				list.add(new Product(productNumber, productName, categoryCode, productPrice, recommend,
 						validateStartDate, validateEndDate, deleteFlg, createDatetime, updateDatetime,productImg));
-			}
+			}			
 		}catch (SQLException e){
 			e.printStackTrace();
 			return null;
@@ -106,25 +106,16 @@ public class ProductDAO {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			String sql = "select * from products where delete_flg = 0 "
-					+ "and sysdate() between valid_start_date and valid_end_date and product_number = ?";
+					+ "and date_format(sysdate(), '%y/%m/%d') between valid_start_date and valid_end_date and product_number = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, productNo);
 			ResultSet rs = pStmt.executeQuery();
 			while(rs.next()) {
 				int productNumber = rs.getInt("product_number");
 				String productName = rs.getString("product_name");
-				int categoryCode =rs.getInt("category_code");
 				int productPrice = rs.getInt("product_price");
-				int recommend = rs.getInt("recommend");
-				String validateStartDate = rs.getString("valid_start_date");
-				String validateEndDate = rs.getString("valid_end_date");
-				int deleteFlg = rs.getInt("delete_flg");
-				String createDatetime = rs.getString("create_datetime");
-				String updateDatetime = rs.getString("update_datetime");
 				String productImg = rs.getString("product_img");
-
-				purchasedProduct = new Product(productNumber, productName, categoryCode, productPrice, recommend,
-						validateStartDate, validateEndDate, deleteFlg, createDatetime, updateDatetime,productImg);
+				purchasedProduct = new Product(productNumber, productName, productPrice, productImg);
 			}
 		}catch (SQLException e){
 			e.printStackTrace();
@@ -151,7 +142,7 @@ public class ProductDAO {
 			pStmt.setInt(8, product.getDeleteFlg());
 			pStmt.setString(9, product.getProduct_img());	
 			int result = pStmt.executeUpdate();
-			if(result != 1) {				
+			if(result != 1) {
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();

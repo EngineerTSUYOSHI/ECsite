@@ -36,7 +36,6 @@ public class PurchaseController extends HttpServlet {
 			PurchaseDTO dto = purchaseLogic.execute(request,response);
 			request.setAttribute("dto", dto);
 		} catch (Exception e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/purchasedProduct.jsp");
@@ -51,10 +50,8 @@ public class PurchaseController extends HttpServlet {
 		PurchaseLogic purchaseLogic = new PurchaseLogic();
 		try {
 			PurchaseDTO dto = purchaseLogic.execute(request,response);
-			System.out.println("this is Controller" + dto.getProduct().getProductName());
 			request.setAttribute("dto", dto);
 		} catch (Exception e) {
-			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
 		RequestDispatcher rd=request.getRequestDispatcher("/WEB-INF/jsp/purchasedProduct.jsp");

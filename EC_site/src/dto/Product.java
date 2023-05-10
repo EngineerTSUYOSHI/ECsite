@@ -38,6 +38,12 @@ public class Product implements Serializable{
 		this.createDatetime = createDatetime;
 		this.updateDatetime = updateDatetime;
 	}
+	public Product(int productNumber,String productName,int productPrice, String product_img) {
+		this.productNumber = productNumber; 
+		this.productName = productName;
+		this.productPrice = productPrice;
+		this.product_img = product_img;
+	}
 	
 	public String getProduct_img() {
 		return product_img;
