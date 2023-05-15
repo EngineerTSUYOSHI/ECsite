@@ -35,9 +35,9 @@
 	        </div>
 	        <div>
 	            <label>価格：</label> 
-	            <input type="text" value="<%=lowPrice %>" name="lowPrice" maxlength="7" id="lowPrice" onblur="checkChar('lowPrice')" >
+	            <input type="text" value="<%=lowPrice %>" name="lowPrice" maxvalue="7" id="lowPrice" onblur="checkChar('lowPrice')" >
 	            <label>円 〜 </label>
-	            <input type="text" value="<%=upPrice %>" name="upPrice" maxlength="7" id="upPrice" onblur="checkChar('upPrice')" >
+	            <input type="text" value="<%=upPrice %>" name="upPrice" maxvalue="7" id="upPrice" onblur="checkChar('upPrice')" >
 	            <label>円</label>
 	        </div>
 	        <div class="search">

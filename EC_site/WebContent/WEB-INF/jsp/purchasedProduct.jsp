@@ -28,19 +28,21 @@
                 <td>
                     <div class="product">
                         <img src="/EC_site/upload/<%=dto.getProduct().getProduct_img() %>">
-                        <p><%=dto.getProduct().getProductName() %>（申込番号）</p>
+                        <label><%=dto.getProduct().getProductName() %></label>
+                        <label>（申込番号）:<%=dto.getApplicationNumber() %></label>                         
                     </div>
                 </td>
                 <td><%=dto.getProduct().getProductPrice() %>円</td>
                 <!-- <form action='/EC_site/PurchaseController' method='post' name='buy'> -->
-                <td><input type="text" maxlength="2" name='quantity' method='post' id='quantity' size='4'><span>個</span></td>
+                <td><input type="number" max="2" name='quantity' method='post' id='quantity' size='4'><span>個</span>
+                <label><%=dto.getQuantityErrorMessage() %></label>
+                </td>
                 <td><input value="" name="total_price" type="text" id="total_price" size='10' readonly>円</td>
                 <!-- </form> -->
             </tr>
         </table>
 
         <div class=button>
-            <input class="btn" type="submit" value="検索">
             <a>購入</a>
             <a>商品一覧へ<br>戻る</a>
         </div>
@@ -54,7 +56,7 @@
 		var total_price = document.getElementById("total_price");
 	    //数量が入力されたら合計額を計算して表示
 	    quantity.addEventListener("change",function(){
-	      total_price.value = this.value * <%=dto.getProduct().getProductPrice() %>
+	      total_price.value = this.value * <%=dto.getProduct().getProductPrice() %> * 1.08
 	    });
     </script>
 </body>

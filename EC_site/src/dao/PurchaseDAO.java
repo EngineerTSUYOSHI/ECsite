@@ -19,11 +19,10 @@ public class PurchaseDAO {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
 			String sql =
-					"Select max(entry_number) from purchase_tbl where user_id = '00000000' and delete_flg = 0";
+					"Select max(entry_number) from purchase_tbl where user_id = '00000000' and create_datetime = CURDATE()";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			
-			ResultSet rs = pStmt.executeQuery();
-			System.out.println("rs is " + rs);
+			ResultSet rs = pStmt.executeQuery();			
 			if(rs == null) {
 				LocalDateTime nowDate = LocalDateTime.now();
 				DateTimeFormatter dtf3 = DateTimeFormatter.ofPattern("yyyyMMdd");
@@ -38,7 +37,6 @@ public class PurchaseDAO {
 			e.printStackTrace();
 			return null;
 		}
-		System.out.println("申込番号は" + entry_number);
 		return entry_number;
 	}
 }

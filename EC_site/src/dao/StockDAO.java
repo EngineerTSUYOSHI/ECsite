@@ -11,8 +11,8 @@ public class StockDAO {
 	private final String DB_USER = "root";
 	private final String DB_PASS = "root";
 //	在庫数を取り出す
-	public int selectStockByProductNumber(int productNumber) throws Exception {
-		int stock = 0;
+	public String selectStockByProductNumber(int productNumber) throws Exception {
+		String stock = "";
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
@@ -23,12 +23,11 @@ public class StockDAO {
 			ResultSet rs = pStmt.executeQuery();
 
 			while(rs.next()) {
-				stock = rs.getInt("stock");
+				stock = rs.getString("stock");
 			}
 		}catch (SQLException e){
 			e.printStackTrace();
-		}
-		System.out.println("在庫数は" + stock);
+		}		
 		return stock;
 	}
 //	在庫から発注分を引く
