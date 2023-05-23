@@ -1,0 +1,108 @@
+@charset "UTF-8";
+
+html * {
+  box-sizing: border-box;
+  
+}
+header p{
+    font-size: 50px;
+    background-color: aqua;
+    text-align: center;
+}   
+footer{
+    background-color: silver;
+    height:60px;
+}
+footer p{
+    float: right;
+    font-size: 20px;
+    margin: 0px 5px 0px 0px;
+}
+
+table {
+	width: 98.5vw;
+    text-align: center;
+    
+}
+table img{
+    display: block;
+    width: 50%;/*任意の横幅を指定*/
+    height: 200px;/*任意の高さを指定*/
+    object-fit: cover;
+}
+
+.product label{
+    display: flex;
+    align-items: center;
+    text-align: left;
+    justify-content: center;
+}
+.product{
+    display: flex;
+}
+
+.button {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: wrap;
+    padding: 50px 250px 100px 250px;
+}
+
+.button button {
+    font-size: 3em;
+    padding: 20px;
+}
+
+a{
+    border: 1px solid black;
+    background-color:#fef2cb;
+    width: 100px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2);
+    width: 300px;
+    height: 150px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+  }
+  
+.popup-header {
+    background-color: #deeaf6;
+    padding: 10px;
+    text-align: center;
+    height: 40px;
+}
+  
+.popup-header h4 {
+    text-align: left;
+    margin-top: 0;
+}
+  
+.popup-content {
+    padding: 20px;
+    text-align: center;
+    height: calc(100% - 90px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+  
+.button-container {
+    text-align: center;
+    margin-top: 5px;
+    padding-top: 10px;
+}
+  
+.button-container button {
+    background-color: gray;
+    margin:0 10px;
+}
