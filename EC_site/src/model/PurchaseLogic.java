@@ -22,7 +22,13 @@ public class PurchaseLogic {
 	String errorMessage = "";
 	String stock = null;
 	
-	public  PurchaseDTO execute(HttpServletRequest request,HttpServletResponse response) throws Exception {	
+	public  PurchaseDTO execute(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		/**
+		 * 購入処理を実施
+		 * @param request, response
+		 * @return PurchaseDTO
+		 * @throws Exception 
+		 */
 //		選択された商品番号から、商品情報を取得
 		ProductDAO dao = new ProductDAO();
 		int productNumber = Integer.parseInt(request.getParameter("product_number"));
@@ -73,6 +79,11 @@ public class PurchaseLogic {
 		return null;
 	}
 	
+	/**
+	 * リクエストから数量を取得
+	 * @param request
+	 * @return　数量
+	 */
 	private int getQuantity(HttpServletRequest request) {
 		if(request.getParameter("quantity") != null) {
 			quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -80,6 +91,12 @@ public class PurchaseLogic {
 		return quantity;
 	}
 	
+	/**
+	 * 申込番号を生成
+	 * @param productNumber
+	 * @return　生成された申込番号
+	 * @throws Exception
+	 */
 	private String makeApplicationNumber(int productNumber) throws Exception {
 		PurchaseDAO purchaseDAO = new PurchaseDAO();
 		applicationNumber = purchaseDAO.selectEntryNumberByUserId();
@@ -93,6 +110,12 @@ public class PurchaseLogic {
 		return applicationNumber;
 	}
 	
+	/**
+	 * 商品の在庫数を取得
+	 * @param productNumber　商品番号
+	 * @return　在庫数
+	 * @throws Exception
+	 */
 	private String getStock(int productNumber) throws Exception {
 		StockDAO stockDAO = new StockDAO();
 		stock = stockDAO.selectStockByProductNumber(productNumber);
