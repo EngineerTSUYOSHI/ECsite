@@ -106,7 +106,7 @@ public class ProductDAO {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);
-			String sql = "select * from products where delete_flg = 0 "
+			String sql = "select product_number, product_name, product_price, product_img from products where delete_flg = 0 "
 					+ "and date_format(sysdate(), '%y/%m/%d') between valid_start_date and valid_end_date and product_number = ?";
 			PreparedStatement pStmt = conn.prepareStatement(sql);
 			pStmt.setInt(1, productNo);

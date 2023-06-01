@@ -15,7 +15,7 @@ function checkChar(quantity,getPrice){
         return;
     /* 入力値に問題なければ小計を計算 */
     }else{
-	    total_price.innerHTML = quantity.value * getPrice
+	    total_price.innerHTML = (quantity.value * getPrice).toLocaleString();
     }
 }
 		
@@ -31,8 +31,8 @@ const goToComplete = function() {
     });
     /* はいを押した場合。　※処理内容は完了画面の作成時に記入 */
     yesButton.addEventListener('click', () => {
-        alert('購入しました！');
         popup.style.display = 'none';
+        document.complete.submit();
     });
     /* いいえボタンを押した場合はポップアップウィンドを非表示 */
     noButton.addEventListener('click', () => {
@@ -49,3 +49,11 @@ const returnButton = document.getElementById('returnButton');
 returnButton.addEventListener('click', () => {
     document.myform.submit(); // フォームを送信
 });
+
+window.onload = function(){
+	var priceElement = document.getElementById("price");
+	priceElement.innerText = Number(priceElement.innerText).toLocaleString();
+	
+	var totalPriceElement = document.getElementById("total_price");
+	totalPriceElement.innerText = Number(totalPriceElement.innerText).toLocaleString();
+};

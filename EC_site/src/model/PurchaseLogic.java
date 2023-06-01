@@ -69,7 +69,7 @@ public class PurchaseLogic {
 		    int nowPage = Integer.parseInt(request.getParameter("searchNowPage"));
 	
 		    PurchaseDTO purchasedDTO = new PurchaseDTO(searchProductname, searchCategoryCode, searchLowPrice, searchUpPrice, orderCode,
-					productDTO, errorMessage, applicationNumber, quantity, quantityErrorMessage, totalPrice, nowPage);
+					productDTO, errorMessage, applicationNumber, quantity, quantityErrorMessage, totalPrice, nowPage, productNumber);
 			return purchasedDTO;
 		}catch(Exception e) {
 			System.out.println(e);

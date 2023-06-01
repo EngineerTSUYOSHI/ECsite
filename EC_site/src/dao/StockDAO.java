@@ -31,8 +31,7 @@ public class StockDAO {
 		return stock;
 	}
 //	在庫から発注分を引く
-	public void minusStockByProductNumber(int quantity, int productNumber) throws Exception {
-		
+	public void updateStockByProductNumber(int quantity, int productNumber) throws Exception {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS);

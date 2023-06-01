@@ -27,6 +27,17 @@
         <input type="hidden" value="<%=purchaseDTO.getOrderCode() %>" name="recommend">
         <input type="hidden" value="<%=purchaseDTO.getNowPage() %>" name="now_page">
         </form>
+        
+        <form action='/EC_site/CompleteController' method='post' name='complete'>
+        <input type="hidden" value="<%=purchaseDTO.getProduct().getProductNumber() %>" name="product_number">
+        <input type="hidden" value="<%=purchaseDTO.getApplicationNumber() %>" name="entryNumber">
+        <input type="hidden" value="<%=purchaseDTO.getProductName() %>" name="searchName">
+        <input type="hidden" value="<%=purchaseDTO.getSearchCategoryCode() %>" name="searchCategoryCode">
+        <input type="hidden" value="<%=purchaseDTO.getSearchLowPrice() %>" name="searchLowPrice">
+        <input type="hidden" value="<%=purchaseDTO.getSearchUpPrice() %>" name="searchUpPrice">
+        <input type="hidden" value="<%=purchaseDTO.getOrderCode() %>" name="searchRecommendCode">
+        <input type="hidden" value="<%=purchaseDTO.getNowPage() %>" name="searchNowPage">
+        
         <table border='1'>
             <tr>
                 <th>商品名（申込番号）</th>
@@ -44,7 +55,7 @@
                         	（<%=purchaseDTO.getApplicationNumber() %>)</label>
                     </div>
                 </td>
-                <td><%=purchaseDTO.getProduct().getProductPrice() %>円</td>
+                <td><span id="price"><%=purchaseDTO.getProduct().getProductPrice() %></span>円</td>
                 <td>
                 <input type="text" value="<%=purchaseDTO.getQuantity() %>" maxlength="2" name='quantity' method='post' id='quantity' size='4' 
                 	onblur="checkChar('quantity',<%=purchaseDTO.getProduct().getProductPrice() %>)"><span>個<br></span>
@@ -69,6 +80,7 @@
             <button id="returnButton" >商品一覧へ<br>戻る</button>
         </div>
         <%} %>
+        </form>
     </main>
     <footer>
         <p>copyright@Web開発3.05</p>

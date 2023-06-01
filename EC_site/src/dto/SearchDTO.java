@@ -17,7 +17,7 @@ public class SearchDTO implements Serializable {
 		this.categoryCode = categoryCode;
 		this.lowPrice = lowPrice;
 		this.upPrice = upPrice;
-		this.categoryCode = categoryCode;
+		this.recommendCode = categoryCode;
 		this.limit = limit;
 		this.offset = offset;
 	}

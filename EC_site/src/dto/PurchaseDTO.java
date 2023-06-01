@@ -15,10 +15,12 @@ public class PurchaseDTO implements Serializable {
 	private String quantityErrorMessage;
 	private int totalPrice;
 	private int nowPage;
+	private int productNumber;
 	
 	public PurchaseDTO() {}
 	public PurchaseDTO(String productName, int searchCategoryCode, String searchLowPrice, String searchUpPrice, int orderCode,
-	Product product, String errorMessage, String applicationNumber, int quantity, String quantityErrorMessage, int totalPrice, int nowPage) {
+						Product product, String errorMessage, String applicationNumber, int quantity, String quantityErrorMessage,
+						int totalPrice, int nowPage, int productNumber) {
 		this.productName = productName;
 		this.searchCategoryCode = searchCategoryCode;
 		this.searchLowPrice = searchLowPrice; 
@@ -31,6 +33,13 @@ public class PurchaseDTO implements Serializable {
 		this.quantityErrorMessage = quantityErrorMessage;
 		this.totalPrice = totalPrice;
 		this.nowPage = nowPage;
+		this.productNumber = productNumber;
+	}
+	public int getProductNumber() {
+		return productNumber;
+	}
+	public void setProductNumber(int productNumber) {
+		this.productNumber = productNumber;
 	}
 	public String getProductName() {
 		return productName;

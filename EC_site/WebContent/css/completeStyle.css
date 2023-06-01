@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+html * {
+  box-sizing: border-box;
+  
+}
+header p{
+    font-size: 50px;
+    background-color: aqua;
+    text-align: center;
+}   
+footer{
+    background-color: silver;
+    height:60px;
+}
+footer p{
+    float: right;
+    font-size: 20px;
+    margin: 0px 5px 0px 0px;
+}
+
+.product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;    
+}
+.product img,
+.product label{
+    display: block;
+    margin: 0 auto;
+}
+
+p{
+    text-align: center;
+    font-size:25px;
+}
+
+.button {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: wrap;
+    padding: 50px 250px 100px 250px;
+}
+
+.button button {
+    font-size: 3em;
+    padding: 20px;
+}
